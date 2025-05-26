@@ -1,0 +1,90 @@
+{
+  "nodes": [
+    {
+      "id": "START_001",
+      "name": "Entrada do Usuário",
+      "summary": "Recebe input inicial do usuário",
+      "highlight": "green",
+      "nodeType": "start",
+      "nextNodes": ["PROC_001"]
+    },
+    {
+      "id": "PROC_001",
+      "name": "Análise de Sentimento",
+      "summary": "Analisa o sentimento do texto",
+      "systemPrompt": "Analise o sentimento do texto fornecido. Classifique como positivo, negativo ou neutro.",
+      "userPrompt": "Analise o sentimento deste texto: {START_001.input}",
+      "outputFormat": "{\"sentimento\": \"positivo|negativo|neutro\", \"confianca\": 0.95}",
+      "highlight": "blue",
+      "nodeType": "agentic",
+      "nextNodes": ["DEC_001"]
+    },
+    {
+      "id": "DEC_001",
+      "name": "Decisão por Sentimento",
+      "summary": "Roteia baseado no sentimento",
+      "highlight": "violet",
+      "nodeType": "decision",
+      "decisions": [
+        {
+          "id": "dec_pos",
+          "condition": "{PROC_001.sentimento} == \"positivo\"",
+          "label": "POSITIVO",
+          "targetNodeId": "PROC_002"
+        },
+        {
+          "id": "dec_neg",
+          "condition": "{PROC_001.sentimento} == \"negativo\"",
+          "label": "NEGATIVO",
+          "targetNodeId": "PROC_003"
+        }
+      ]
+    },
+    {
+      "id": "PROC_002",
+      "name": "Resposta Positiva",
+      "summary": "Gera resposta para sentimento positivo",
+      "systemPrompt": "Gere uma resposta encorajadora e positiva.",
+      "userPrompt": "O usuário expressou sentimento positivo: {START_001.input}",
+      "outputFormat": "{\"resposta\": \"texto_positivo\", \"emoji\": \"😊\"}",
+      "highlight": "green",
+      "nodeType": "agentic",
+      "nextNodes": ["MEM_001"]
+    },
+    {
+      "id": "PROC_003",
+      "name": "Resposta Empática",
+      "summary": "Gera resposta empática para sentimento negativo",
+      "systemPrompt": "Gere uma resposta empática e de apoio.",
+      "userPrompt": "O usuário expressou sentimento negativo: {START_001.input}",
+      "outputFormat": "{\"resposta\": \"texto_empatico\", \"sugestao\": \"dica_de_apoio\"}",
+      "highlight": "red",
+      "nodeType": "agentic",
+      "nextNodes": ["MEM_001"]
+    },
+    {
+      "id": "MEM_001",
+      "name": "Armazenar Contexto",
+      "summary": "Salva o contexto da conversa",
+      "context": "Conversa sobre análise de sentimento processada",
+      "highlight": "blue",
+      "nodeType": "memory",
+      "nextNodes": ["END_001"]
+    },
+    {
+      "id": "END_001",
+      "name": "Finalização",
+      "summary": "Entrega resultado final",
+      "systemPrompt": "Finalize a conversa de forma adequada.",
+      "userPrompt": "Resultado processado com sucesso.",
+      "outputFormat": "{\"status\": \"concluido\", \"resultado_final\": \"resposta_completa\"}",
+      "highlight": "default",
+      "nodeType": "end"
+    }
+  ],
+  "config": {
+    "defaultModel": "llama2",
+    "ollamaAddress": "http://localhost:11434",
+    "availableModels": []
+  }
+} 
