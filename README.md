@@ -1,6 +1,10 @@
+<video src="(docs/video.mp4">Veja</video>
+
 # Agent Workflow Editor
 
 Editor visual de workflows para construção de diálogos de agentes. Rápido, leve e porável usando Electron
+
+![texto](docs/mainscreen.png "Screen")
 
 ## 🚀 Características
 
@@ -16,44 +20,22 @@ Editor visual de workflows para construção de diálogos de agentes. Rápido, l
 
 ### Opção 1: Executável Pronto (Windows)
 
-1.  Baixe um dos arquivos da pasta `dist-electron/`:
+1.  Baixe um arquivo de pre-release !
     
-    - **`React Flow Workflow Editor Setup 1.0.0.exe`** - Instalador completo
-    - **`React Flow Workflow Editor 1.0.0.exe`** - Versão portátil (não requer instalação)
-2.  Execute o arquivo baixado e siga as instruções
-    
-
-### Opção 2: Desenvolvimento
+### Opção 2: Diversão rápida
 
 ```bash
 # Clone o repositório
-git clone <url-do-repositorio>
-cd flow
-
-# Instale as dependências
+git clone https://github.com/oliveiracwb/workflow-agent.git
+cd workflow-agent
 npm install
-
-# Execute em modo desenvolvimento
-npm run electron-dev
+npm run dev
 ```
 
-## 🛠️ Scripts Disponíveis
+## 🛠️ Gerar executáveis sérios
 
 ```bash
-# Uso, desenvolvimentos e testes:
-npm run dev              # Servidor web (http://localhost:6987)
-
-Compilar o exe Eletron
-npm run electron-dev     # Aplicação Electron (opcional)
-
-# Build
-npm run build           # Build da aplicação web
-npm run electron-build  # Build da aplicação Electron (todas as plataformas)
-
-# Build específico por plataforma
-npm run electron-build-win    # Windows (.exe + instalador)
-npm run electron-build-mac    # macOS (.dmg)
-npm run electron-build-linux  # Linux (.AppImage + .deb)
+npx electron-builder
 ```
 
 ## 🎯 Como Usar
@@ -77,68 +59,14 @@ npm run electron-build-linux  # Linux (.AppImage + .deb)
 
 1.  **Configure Ollama**: Certifique-se que o Ollama está rodando
 2.  **Abra o Chat**: Clique em “💬 Execute” 
-3.  **Digite entrada**: Forneça input inicial para o workflow
+3.  **Configure o WF**: Forneça input inicial para o workflow
 4.  **Acompanhe**: Veja e veja execução em tempo real
 
 ### 4\. Dica
 
 1.  **Use modelos instructs: são mais propensos a responder adequadamente as saidas JSON**
 2.  **Requer Node.js >= 20.1**
-
-### 5\. Configuração do Ollama
-
-```bash
-# Instale o Ollama
-curl -fsSL https://ollama.ai/install.sh | sh
-
-# Baixe um modelo (exemplo)
-ollama pull llama2
-
-# Execute o servidor (porta padrão 11434)
-ollama serve
-```
-
-## 📁 Estrutura de Arquivos JSON
-
-```json
-{
-  "nodes": [
-    {
-      "id": "start_1",
-      "name": "Início",
-      "nodeType": "start",
-      "nextNodes": ["agent_1"]
-    },
-    {
-      "id": "agent_1", 
-      "name": "Processador IA",
-      "nodeType": "agentic",
-      "systemPrompt": "Você é um assistente útil",
-      "userPrompt": "Processe: {input}",
-      "nextNodes": ["end_1"]
-    },
-    {
-      "id": "end_1",
-      "name": "Fim",
-      "nodeType": "end"
-    }
-  ],
-  "config": {
-    "defaultModel": "llama2",
-    "ollamaAddress": "http://localhost:11434"
-  }
-}
-```
-
-## ⌨️ Atalhos de Teclado
-
-- **Ctrl+N**: Novo workflow
-- **Ctrl+O**: Abrir workflow
-- **Ctrl+S**: Salvar workflow
-- **Ctrl+Shift+N**: Criar novo nó
-- **F5**: Executar workflow
-- **Shift+F5**: Parar execução
-- **Delete/Backspace**: Deletar aresta selecionada
+3.  **Variáveis**: Simples como a saída de um fluxo seguido pelo nome do atributo do campo JSON de saida (PROC_9989874.[field_json_saida])
 
 ## 🔧 Configurações
 
@@ -179,7 +107,6 @@ VITE_WF_OLLAMA_ADDRESS=http://localhost:11434
 
 - **Frontend**: React + TypeScript + React Flow
 - **Desktop**: Electron
-- **Build**: Vite + Electron Builder
 - **IA**: Integração com Ollama
 - **Styling**: CSS-in-JS
 
@@ -202,5 +129,7 @@ Este projeto está sob licença MIT. Veja o arquivo LICENSE para mais detalhes.
 - **Comunidade**: Participe das discussões no GitHub
 
 * * *
+
+[Assista à demonstração](docs/video.mp4)
 
 **Desenvolvido por Oliveira com ❤️ usando React Flow e Electron**
