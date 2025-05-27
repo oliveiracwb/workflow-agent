@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { Handle, Position, NodeResizer } from 'reactflow';
 import type { NodeProps } from 'reactflow';
-import { NODE_COLORS } from '../types/flow';
 
 interface CustomNodeData {
   label: string;
@@ -10,7 +9,6 @@ interface CustomNodeData {
   userPrompt?: string;
   outputFormat?: string;
   context?: string;
-  highlight?: 'violet' | 'red' | 'green' | 'blue' | 'default';
   nodeType?: 'agentic' | 'decision' | 'start' | 'end' | 'memory';
   originalData: {
     id: string;
@@ -20,7 +18,6 @@ interface CustomNodeData {
     userPrompt?: string;
     outputFormat?: string;
     context?: string;
-    highlight?: 'violet' | 'red' | 'green' | 'blue' | 'default';
     nodeType?: 'agentic' | 'decision' | 'start' | 'end' | 'memory';
     nextNodes?: string[];
   };
@@ -32,7 +29,6 @@ interface CustomNodeData {
 
 const CustomNode: React.FC<NodeProps<CustomNodeData>> = memo(({ data, selected }) => {
   const isCluster = data.clusteredNodes && data.clusteredNodes.length > 0;
-  const highlight = data.highlight || 'default';
   const nodeType = data.nodeType || 'agentic';
   // Definir cor fixa por tipo (apenas borda)
   let borderColor = '#e5e7eb';

@@ -8,26 +8,17 @@ interface WorkflowToolbarProps {
   onStartExecution: () => void;
   onStopExecution: () => void;
   onConfigChange: (config: WorkflowConfig) => void;
-  onLayoutChange?: (layout: 'dagre' | 'elk') => void;
 }
-
-const layoutOptions = [
-  { value: 'dagre', label: 'Dagre (Hierárquico)' },
-  { value: 'elk', label: 'ELK (Ótimo)' }
-];
 
 const WorkflowToolbar: React.FC<WorkflowToolbarProps> = ({
   execution,
   config,
   onStartExecution,
   onStopExecution,
-  onConfigChange,
-  onLayoutChange
+  onConfigChange
 }) => {
   const [ollamaConnected, setOllamaConnected] = useState(false);
-  const [availableModels, setAvailableModels] = useState<string[]>([]);
   const [isLoadingModels, setIsLoadingModels] = useState(false);
-  const [selectedLayout, setSelectedLayout] = useState<'dagre' | 'elk'>('dagre');
 
   useEffect(() => {
     checkOllamaConnection();
@@ -42,14 +33,11 @@ const WorkflowToolbar: React.FC<WorkflowToolbarProps> = ({
       setOllamaConnected(connected);
       
       if (connected) {
-        const models = await ollamaService.getModels();
-        setAvailableModels(models);
-        
-        if (!config.defaultModel && models.length > 0) {
+        if (!config.defaultModel) {
           onConfigChange({
             ...config,
-            defaultModel: models[0],
-            availableModels: models
+            defaultModel: 'model1',
+            availableModels: ['model1']
           });
         }
       }
@@ -69,17 +57,6 @@ const WorkflowToolbar: React.FC<WorkflowToolbarProps> = ({
       case 'error': return '#ef4444';
       case 'stopped': return '#64748b';
       default: return '#64748b';
-    }
-  };
-
-  const getStatusText = () => {
-    if (!execution) return 'Parado';
-    switch (execution.status) {
-      case 'running': return 'Executando';
-      case 'completed': return 'Concluído';
-      case 'error': return 'Erro';
-      case 'stopped': return 'Parado';
-      default: return 'Desconhecido';
     }
   };
 

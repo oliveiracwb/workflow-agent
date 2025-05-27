@@ -17,9 +17,7 @@ const ExecutionChat: React.FC<ExecutionChatProps> = ({
   onStopExecution
 }) => {
   const [userInput, setUserInput] = useState('');
-  const [isInputMode, setIsInputMode] = useState(false);
   const [expandedIndexes, setExpandedIndexes] = useState<{ [key: number]: boolean }>({});
-  const [clearTrigger, setClearTrigger] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [lastUserInput, setLastUserInput] = useState<string>('');
 
@@ -46,7 +44,6 @@ const ExecutionChat: React.FC<ExecutionChatProps> = ({
     setLastUserInput(userInput);
     onStartExecution(userInput);
     setUserInput('');
-    setIsInputMode(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -343,7 +340,6 @@ const ExecutionChat: React.FC<ExecutionChatProps> = ({
             </button>
             <button
               onClick={() => {
-                setClearTrigger(t => t + 1);
                 setUserInput('');
                 if (typeof window !== 'undefined') {
                   window.dispatchEvent(new CustomEvent('clear-execution-chat'));

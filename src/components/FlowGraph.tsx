@@ -8,7 +8,6 @@ import ReactFlow, {
   MiniMap,
   Background,
   useReactFlow,
-  Panel,
 } from 'reactflow';
 import type {
   OnConnect,
@@ -81,7 +80,7 @@ const FlowGraph: React.FC = () => {
   
   const containerRef = useRef<HTMLDivElement>(null);
   const workflowExecutor = useRef<WorkflowExecutor | null>(null);
-  const { fitView, zoomIn, zoomOut } = useReactFlow();
+  const { fitView } = useReactFlow();
 
   // Integração com Electron
   useElectron({
@@ -462,17 +461,22 @@ const FlowGraph: React.FC = () => {
     setSelectedEdgeId(null);
   }, []);
 
-  // Handler para deletar aresta selecionada
+  // Handler para deletar aresta ou nó selecionado
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedEdgeId && (e.key === 'Delete' || e.key === 'Backspace')) {
         setEdges((eds) => eds.filter(edge => edge.id !== selectedEdgeId));
         setSelectedEdgeId(null);
+      } else if (selectedNode && (e.key === 'Delete' || e.key === 'Backspace')) {
+        // Remove o nó e todas as arestas conectadas
+        setNodes((nds) => nds.filter(node => node.id !== selectedNode.id));
+        setEdges((eds) => eds.filter(edge => edge.source !== selectedNode.id && edge.target !== selectedNode.id));
+        setSelectedNode(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedEdgeId, setEdges]);
+  }, [selectedEdgeId, selectedNode, setEdges, setNodes]);
 
   // Custom edge style para destacar a aresta selecionada
   const getEdgeStyle = (edge: any) => {
@@ -583,7 +587,6 @@ const FlowGraph: React.FC = () => {
         onStartExecution={handleOpenExecutionChat}
         onStopExecution={handleStopExecution}
         onConfigChange={setConfig}
-        onLayoutChange={handleLayoutChange}
       />
 
       {/* React Flow */}

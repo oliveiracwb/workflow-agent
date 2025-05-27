@@ -32,10 +32,6 @@ const SideMenu: React.FC<SideMenuProps> = memo(({
   onLayoutChange,
   selectedLayout
 }) => {
-  const [expandedSections, setExpandedSections] = useState({
-    create: true,
-    edit: true
-  });
   const [sidebarWidth, setSidebarWidth] = useState(300);
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -50,13 +46,6 @@ const SideMenu: React.FC<SideMenuProps> = memo(({
   ];
   const [nodeSpacingX, setNodeSpacingX] = useState(400);
   const [nodeSpacingY, setNodeSpacingY] = useState(300);
-
-  const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
-  };
 
   const handleSaveGraph = () => {
     try {
@@ -117,58 +106,6 @@ const SideMenu: React.FC<SideMenuProps> = memo(({
     alignItems: 'center',
     justifyContent: 'center',
     gap: '6px'
-  };
-
-  const CollapsibleSection: React.FC<{
-    title: string;
-    icon: string;
-    sectionKey: keyof typeof expandedSections;
-    children: React.ReactNode;
-  }> = ({ title, icon, sectionKey, children }) => {
-    const isExpanded = expandedSections[sectionKey];
-    
-    return (
-      <div style={{ marginBottom: '16px' }}>
-        <button
-          onClick={() => toggleSection(sectionKey)}
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '10px 14px',
-            background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
-            border: '1px solid #d1d5db',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '600',
-            color: '#374151',
-            transition: 'all 0.2s'
-          }}
-        >
-          <span>{icon} {title}</span>
-          <span style={{ 
-            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', 
-            transition: 'transform 0.2s',
-            fontSize: '12px'
-          }}>
-            ▶
-          </span>
-        </button>
-        {isExpanded && (
-          <div style={{ 
-            padding: '16px',
-            border: '1px solid #e5e7eb',
-            borderTop: 'none',
-            borderRadius: '0 0 8px 8px',
-            backgroundColor: 'white'
-          }}>
-            {children}
-          </div>
-        )}
-      </div>
-    );
   };
 
   // Funções para o resizer
@@ -325,6 +262,33 @@ const SideMenu: React.FC<SideMenuProps> = memo(({
               ✏️ Editar
             </button>
           </div>
+          {/* Botão de excluir nó */}
+          {selectedNode && (
+            <button
+              onClick={handleDeleteSelectedNode}
+              style={{
+                ...buttonStyle,
+                width: '100%',
+                marginTop: '10px',
+                background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)',
+                color: 'white',
+                fontWeight: '600',
+                border: 'none',
+                boxShadow: '0 2px 8px rgba(239,68,68,0.08)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                fontSize: '14px',
+                cursor: 'pointer',
+                borderRadius: '8px',
+                transition: 'all 0.2s',
+                opacity: 1
+              }}
+            >
+              🗑️ Excluir
+            </button>
+          )}
         </div>
         {/* Separador */}
         <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb', margin: '12px 0' }} />
